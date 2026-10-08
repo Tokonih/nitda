@@ -105,6 +105,18 @@ const KPIDataSourceValidation = () => {
   const isPendingDefinition = (kpi) =>
     !kpi.is_approved && !kpi.approval_comment;
 
+  const handleEnterKpiValue = (kpi) => {
+    navigate("/dashboard/create-kpi", {
+      state: {
+        kpiEntry: {
+          kpiId: String(kpi.id),
+          kpiName: kpi.name,
+          year: String(kpi.year || selectedYear),
+        },
+      },
+    });
+  };
+
   const handleKpiRowClick = (kpi) => {
     if (canReviewDefinitions && isPendingDefinition(kpi)) {
       const departmentId =
@@ -646,12 +658,22 @@ const KPIDataSourceValidation = () => {
                           <TableCell>{Number(kpi.target_value).toLocaleString()}</TableCell>
                           <TableCell>{statusBadge}</TableCell>
                           <TableCell>
-                            <button
-                              className="text-xs text-[#155535] font-medium hover:underline"
-                              onClick={(e) => { e.stopPropagation(); handleKpiRowClick(kpi); }}
-                            >
-                              {canReviewDefinitions && isPendingDefinition(kpi) ? "Review" : "View"}
-                            </button>
+                            <div className="flex items-center gap-3">
+                              <button
+                                className="text-xs text-[#155535] font-medium hover:underline"
+                                onClick={(e) => { e.stopPropagation(); handleKpiRowClick(kpi); }}
+                              >
+                                {canReviewDefinitions && isPendingDefinition(kpi) ? "Review" : "View"}
+                              </button>
+                              <button
+                                className="text-xs text-white font-medium rounded bg-[#155535] px-2 py-1 hover:bg-[#0f3f2a] disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                onClick={(e) => { e.stopPropagation(); handleEnterKpiValue(kpi); }}
+                                disabled={!kpi.is_approved}
+                                title={kpi.is_approved ? "Enter KPI value" : "KPI definition must be approved before values can be entered"}
+                              >
+                                Enter KPI Value
+                              </button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       );

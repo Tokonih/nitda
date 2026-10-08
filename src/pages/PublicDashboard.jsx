@@ -12,6 +12,11 @@ import { getPublicScorecard, getOverallPerformance, getPublicSummary } from "../
 import { useYears } from "@/hooks/use-years";
 import { useDispatch } from "react-redux";
 import { fetchScorecardConfig } from "../Slices/scoreCardConfigSlice";
+import dtcnLogo from "@/assets/logos/dtcn.png";
+import gizLogo from "@/assets/logos/giz.png";
+import euLogo from "@/assets/logos/eu.png";
+import germanyLogo from "@/assets/logos/germany.png";
+import nitdaLogo from "@/assets/logos/nitda-horizontal-transparent.png";
 
 const PublicDashboard = () => {
   const navigate = useNavigate();
@@ -201,28 +206,36 @@ const PublicDashboard = () => {
       {/* Header */}
       <header className="bg-[#00663B] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate(-1)}
-                className="p-1 px-2 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors flex items-center gap-1 text-sm font-medium border border-white/20"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                Go Back
-              </button>
-              <h1 className="text-xl font-heading font-bold text-white border-l border-white/20 pl-4 ml-2">SRAP 2.0</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link to="/srap-landing" className="text-sm text-gray-300 hover:text-[#c4a661] transition-colors font-medium">
-                Home
-              </Link>
-            </div>
+          <div className="relative flex items-center h-16">
+            <button
+              onClick={() => navigate(-1)}
+              className="absolute left-0 p-1 px-2 rounded hover:bg-white/10 text-white/80 hover:text-white transition-colors flex items-center gap-1 text-sm font-medium border border-white/20"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Go Back
+            </button>
+            <h1 className="mx-auto text-xl font-heading font-bold text-white">SRAP 2.0</h1>
+            <Link
+              to="/srap-landing"
+              className="absolute right-0 text-sm text-gray-300 hover:text-[#c4a661] transition-colors font-medium"
+            >
+              Home
+            </Link>
           </div>
         </div>
         <div className="border-t border-[#2dd4bf]/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-xs text-white/90 font-medium">
-            SRAP 2.0: Strategic Roadmap &amp; Action Plan (2025-2027)
-            <span className="ml-8 text-white/80">Aligned with the Renewed Hope Agenda and the Federal Ministry of Communications, Innovation &amp; Digital Economy</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
+              <img src={nitdaLogo} alt="NITDA" className="h-10 md:h-12 w-auto object-contain" />
+              <img src={germanyLogo} alt="German Cooperation" className="h-14 md:h-16 w-auto object-contain" />
+              <img src={euLogo} alt="European Union" className="h-14 md:h-16 w-auto object-contain" />
+              <img src={gizLogo} alt="GIZ" className="h-10 md:h-12 w-auto object-contain" />
+              <img src={dtcnLogo} alt="DTCN" className="h-10 md:h-12 w-auto object-contain" />
+            </div>
+            <p className="mt-4 text-center text-xs text-white/90 font-medium">
+              SRAP 2.0: Strategic Roadmap &amp; Action Plan (2025-2027)
+              <span className="ml-2 text-white/80">Aligned with the Renewed Hope Agenda and the Federal Ministry of Communications, Innovation &amp; Digital Economy</span>
+            </p>
           </div>
         </div>
       </header>

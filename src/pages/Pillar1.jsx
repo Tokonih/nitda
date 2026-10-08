@@ -31,7 +31,7 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import KpiDrillDownModal from "@/components/modals/KpiDrillDownModal";
@@ -82,6 +82,7 @@ const fmt = (n) => new Intl.NumberFormat("en-US").format(n || 0);
 // ── Component ─────────────────────────────────────────────────────────────────
 const Pillar1 = () => {
   const { id } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.authSlice);
@@ -91,14 +92,22 @@ const Pillar1 = () => {
   const { years: yearsList } = useYears();
   const currentYear = new Date().getFullYear().toString();
   const globalFilter = useGlobalFilter();
+  const dashboardFilters = location.state?.filters || {};
+  const normalizeQuarter = (quarter) => {
+    if (!quarter || quarter === "All" || quarter === "all") return "all";
+    const value = String(quarter);
+    return value.startsWith("Q") ? value : `Q${value}`;
+  };
 
   // ── Filters ──────────────────────────────────────────────────────────────
-  const [selectedYear, setSelectedYear] = useState(globalFilter.year || currentYear);
+  const [selectedYear, setSelectedYear] = useState(dashboardFilters.year || globalFilter.year || currentYear);
   const [selectedQuarter, setSelectedQuarter] = useState(
-    globalFilter.quarter && globalFilter.quarter !== "All" ? globalFilter.quarter : "all"
+    normalizeQuarter(dashboardFilters.quarter || globalFilter.quarter)
   );
   const [selectedDepartment, setSelectedDepartment] = useState(
-    globalFilter.department || user?.department?.id?.toString() || ""
+    dashboardFilters.department !== undefined
+      ? dashboardFilters.department
+      : (globalFilter.department || user?.department?.id?.toString() || "")
   );
   const [departments, setDepartments] = useState([]);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -104,6 +104,8 @@ const getErrorMessage = (error) => {
 const SrapKpiCreation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const kpiEntryTarget = location.state?.kpiEntry;
   const { user } = useSelector((state) => state.authSlice);
   const userDepartment = user?.department?.id || "";
   const { toast } = useToast();
@@ -126,13 +128,13 @@ const SrapKpiCreation = () => {
   const { years: yearsList } = useYears();
   const now = new Date();
   const currentYear = now.getFullYear().toString();
-  const reportingYear = readFilterCookie().year || currentYear;
+  const reportingYear = kpiEntryTarget?.year || readFilterCookie().year || currentYear;
   const [selectedYear, setSelectedYear] = useState(reportingYear);
   const [selectedQuarter, setSelectedQuarter] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
 
   // KPI data entry state
-  const [selectedKpi, setSelectedKpi] = useState("");
+  const [selectedKpi, setSelectedKpi] = useState(kpiEntryTarget?.kpiId || "");
   const [kpiValue, setKpiValue] = useState("");
   const [remarks, setRemarks] = useState("");
   const [evidenceFile, setEvidenceFile] = useState(null);
@@ -474,9 +476,17 @@ const SrapKpiCreation = () => {
   const departmentKpis = isStakeholderUser
     ? pillarsList || []
     : list || [];
+  const entryKpiOption = kpiEntryTarget?.kpiId && kpiEntryTarget?.kpiName
+    ? { id: kpiEntryTarget.kpiId, name: kpiEntryTarget.kpiName }
+    : null;
+  const selectableKpis = entryKpiOption && !departmentKpis.some(
+    (kpi) => String(kpi.id) === String(entryKpiOption.id)
+  )
+    ? [entryKpiOption, ...departmentKpis]
+    : departmentKpis;
 
   // Get selected KPI details
-  const selectedKpiDetails = departmentKpis.find(
+  const selectedKpiDetails = selectableKpis.find(
     (kpi) => (kpi.id?.toString() || "") === selectedKpi
   );
 
@@ -1004,7 +1014,7 @@ const SrapKpiCreation = () => {
                           <Loader2 className="h-4 w-4 animate-spin mr-2" />
                           Loading {getKpiLabelPlural(user).toLowerCase()}...
                         </div>
-                      ) : departmentKpis.length === 0 ? (
+                      ) : selectableKpis.length === 0 ? (
                         <div className="p-6 text-center">
                           <p className="text-sm font-medium text-red-500 italic">
                             No approved {getKpiLabelPlural(user).toLowerCase()} found for {selectedYear}.
@@ -1014,7 +1024,7 @@ const SrapKpiCreation = () => {
                           </p>
                         </div>
                       ) : (
-                        departmentKpis.map((kpi) => (
+                        selectableKpis.map((kpi) => (
                           <SelectItem key={kpi.id} value={kpi.id?.toString() || ""} className="whitespace-normal break-words h-auto py-2">
                             {kpi.name}
                           </SelectItem>

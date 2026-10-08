@@ -88,6 +88,13 @@ const Index = () => {
   const { user } = useSelector((state) => state.authSlice);
   const userDepartment = user?.department?.id || "";
   const isAdmin = checkIsAdmin(user);
+  const pillarNavigationState = {
+    filters: {
+      year: String(year),
+      quarter,
+      department: selectedDepartment,
+    },
+  };
   const {
     list,
     loading: pillar,
@@ -675,7 +682,7 @@ const Index = () => {
               completion: Number(p.progress_percentage ?? 0),
             })) || []}
             showHeader={false}
-            onPillarClick={(id) => navigate(`/dashboard/pillar/${id}`)}
+            onPillarClick={(id) => navigate(`/dashboard/pillar/${id}`, { state: pillarNavigationState })}
           />
           )}
         </div>
@@ -725,7 +732,7 @@ const Index = () => {
                 // UPDATED: bg-muted/40 for clearer cards in dark mode
                 className="bg-muted/40 dark:bg-card border border-border rounded-xl p-5 hover:shadow-md transition-all cursor-pointer"
                 onClick={() =>
-                  navigate(`/dashboard/pillar/${pillar.pillar_id}`)
+                  navigate(`/dashboard/pillar/${pillar.pillar_id}`, { state: pillarNavigationState })
                 }
               >
                 {/* Header */}
@@ -1190,7 +1197,7 @@ const Index = () => {
                       <tr
                         key={pillar.pillar_id}
                         className="border-b border-border/50 hover:bg-muted/30 transition-colors cursor-pointer"
-                        onClick={() => { setSelectedQuarterDetail(null); navigate(`/dashboard/pillar/${pillar.pillar_id}`); }}
+                        onClick={() => { setSelectedQuarterDetail(null); navigate(`/dashboard/pillar/${pillar.pillar_id}`, { state: pillarNavigationState }); }}
                       >
                         <td className="py-3 px-3 font-medium text-foreground text-xs max-w-[220px]">
                           <span className="line-clamp-2 leading-snug" title={pillar.pillar_name}>
