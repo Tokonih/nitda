@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NITDA Performance Management System Dashboard Design System
+ * Primary NITDA Green: #155535 (146 65% 20%)
+ * Professional, clean look with government agency branding
+ */
+
+@layer base {
+  :root {
+    --background: 0 0% 96%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* NITDA Primary Green */
+    /* --primary: 146 65% 20%; */
+    --primary: 136, 97%, 34%, 1;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 146 65% 20%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 146 65% 92%;
+    --accent-foreground: 146 65% 20%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 146 65% 20%;
+
+    --radius: 0.5rem;
+
+    /* NITDA Sidebar Colors */
+    --sidebar-background: 146 65% 20%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 146 65% 15%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 146 65% 25%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 146 65% 30%;
+    --sidebar-ring: 146 65% 40%;
+
+    /* NITDA Custom Variables */
+    --nitda-green: 146 65% 20%;
+    --nitda-green-light: 146 65% 92%;
+    --nitda-green-dark: 146 65% 15%;
+    --success: 120 100% 25%;
+    --warning: 45 100% 50%;
+    --info: 210 100% 50%;
+  }
+
+  .dark {
+    /* Main Background: Very Dark (Slate 950) */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    /* Cards: Slightly Lighter (Slate 900) - creates depth */
+    --card: 222.2 47% 11.2%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 47% 11.2%;
+    --popover-foreground: 210 40% 98%;
+
+    /* NITDA Green adjusted for Dark Mode legibility */
+    --primary: 146 60% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted: Used for inner containers (Slate 800) */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 146 65% 25%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders: Subtle dark lines */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 146 60% 45%;
+
+    /* Sidebar specific darks */
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 146 65% 30%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 146 65% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 146 65% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground overflow-x-hidden w-full;
+  }
+
+  /* Global focus styles to replace browser default blue */
+  input:focus, 
+  select:focus, 
+  textarea:focus,
+  button:focus-visible {
+    @apply outline-none ring-2 ring-[#155535]/30 border-[#155535] transition-all;
+  }
+
+  /* Custom styling for native selects to match brand */
+  select {
+    @apply cursor-pointer;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+
+/* NITDA Dashboard Components */
+@layer components {
+  .nitda-card {
+    @apply bg-card border border-border rounded-lg shadow-sm p-6;
+  }
+
+  .appsidebar-card {
+    @apply bg-card;
+  }
+
+  .nitda-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md font-medium transition-colors;
+  }
+
+  .nitda-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md font-medium transition-colors;
+  }
+
+  .sidebar-collapsed {
+    @apply w-16;
+  }
+
+  .sidebar-expanded {
+    @apply w-64;
+  }
+
+  .sidebar-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .kpi-card {
+    @apply bg-card rounded-lg shadow-sm border border-border p-6 hover:shadow-md transition-shadow;
+  }
+
+  .status-badge-active {
+    @apply bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-sm font-medium;
+  }
+
+  .status-badge-pending {
+    @apply bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 px-2 py-1 rounded-full text-sm font-medium;
+  }
+
+  .status-badge-inactive {
+    @apply bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 px-2 py-1 rounded-full text-sm font-medium;
+  }
+
+  /* Hide scrollbar while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+  }
+
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(45, 212, 191, 0.3) transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background-color: rgba(45, 212, 191, 0.3);
+    border-radius: 20px;
+  }
+}
+

@@ -1,0 +1,82 @@
+import { makeRequest } from "../makeRequest";
+import { makeRequestFormData } from "../makeRequest";
+
+export const getQuarterSummary = async ({
+  quarter,
+  all_quarters,
+  department_id,
+  year,
+  use_approvals,
+} = {}) => {
+  const params = new URLSearchParams();
+
+  if (quarter) params.append("quarter", quarter);
+  if (all_quarters) params.append("all_quarters", all_quarters);
+  if (department_id) params.append("department_id", department_id);
+  if (year) params.append("year", year);
+  if (use_approvals) params.append("use_approvals", use_approvals);
+  //   if (timeline) params.append("timeline", timeline);
+  //   if (per_page) params.append("per_page", per_page);
+
+  return makeRequest("get", `pillars/quarterly-summary?${params.toString()}`);
+};
+
+export const getPillarPerformanceSummary = async ({
+  pillar_id,
+  quarter,
+  period_type,
+  year,
+  department_id,
+  use_approvals,
+} = {}) => {
+  const params = new URLSearchParams();
+
+  if (pillar_id) params.append("pillar_id", pillar_id);
+  if (period_type) params.append("period_type", period_type);
+  if (year) params.append("year", year);
+  if (quarter) params.append("quarter", quarter);
+  if (department_id) params.append("department_id", department_id);
+  if (use_approvals !== undefined) params.append("use_approvals", use_approvals);
+
+  return makeRequest("get", `pillars/progress-totals?${params.toString()}`);
+};
+
+export const getDepartmentSummary = async ({
+  quarter,
+  period_type,
+  year,
+  use_approvals,
+  department_id,
+  department_type = "nitda",
+} = {}) => {
+  const params = new URLSearchParams();
+
+  if (quarter) params.append("quarter", quarter);
+  if (period_type) params.append("period_type", period_type);
+  if (year) params.append("year", year);
+  if (use_approvals) params.append("use_approvals", use_approvals);
+  if (department_id) params.append("department_id", department_id);
+  if (department_type) params.append("department_type", department_type);
+
+  return makeRequest("get", `departments/matrix?${params.toString()}`);
+};
+
+export const getKPIPerformance = async ({
+  period_type,
+  quarter,
+  year,
+  use_approvals,
+  department_id,
+  limit,
+} = {}) => {
+  const params = new URLSearchParams();
+  if (quarter) params.append("quarter", quarter);
+
+  if (period_type) params.append("period_type", period_type);
+  if (year) params.append("year", year);
+  if (use_approvals) params.append("use_approvals", use_approvals);
+  if (department_id) params.append("department_id", department_id);
+  if (limit) params.append("limt", limit);
+
+  return makeRequest("get", `kpis/top-underperforming?${params.toString()}`);
+};

@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    networks:
+      - internal
+      - dokploy-network
+
+networks:
+  internal:
+    driver: bridge
+
+  dokploy-network:
+    external: true
